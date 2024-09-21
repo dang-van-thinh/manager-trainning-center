@@ -1,29 +1,26 @@
+import axiosInstance from "../configs/axios";
+
 type LoginPayLoad = {
   email: string;
   password: string;
 };
 
-const login = async (login: LoginPayLoad) => {
+const login = (login: LoginPayLoad) => {
   // console.log(handlerApi(login));
-  return await handlerApi(login);
+  return handlerApi(login);
 };
 
-const handlerApi = async (data: LoginPayLoad) => {
-  const api = `http://localhost:8080/api/auth/test?email=${data.email}&password=${data.password}`;
-
+const handlerApi = async (data: LoginPayLoad): Promise<boolean> => {
   try {
-    const response = await fetch(api, {
-      method: "get",
-      headers: {
-        "content-type": "application/json;charset=UTF-8",
-      },
-    });
-    const result = await response.json();
+    const result = await axiosInstance.get(
+      `/auth/test?email=${data?.email}&password=${data?.password}`
+    );
+
     console.log(result);
-    return result; // Return the API response
-  } catch (errors) {
-    console.log(errors);
-    throw errors; // Optional: rethrow error if needed
+
+    return true;
+  } catch (error) {
+    return false;
   }
 };
 
