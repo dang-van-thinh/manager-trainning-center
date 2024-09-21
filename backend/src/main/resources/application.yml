@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: quan-ly
+  datasource:
+    url: jdbc:postgresql://localhost:5432/quan-ly
+    username: postgres
+    password: 123
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    database: postgresql
+server:
+  address: 0.0.0.0
+  port: 8080
