@@ -7,10 +7,12 @@ const axiosInstance = axios.create({
     "X-Custom-Header": "foobar",
     "Content-Type": "application/json",
   },
+  withCredentials: true,
 });
 
-axiosInstance.interceptors.response.use(function (response): any {
-  return response.data;
-});
+// cấu hình dữ liệu trả ra mỗi data thôi
+// axiosInstance.interceptors.response.use(function (response): any {
+//   return response.data;
+// });
 
 export default axiosInstance;

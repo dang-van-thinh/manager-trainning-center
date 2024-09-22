@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import thinh.manager.backend.model.response.errors.ApiErrorResponse;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,17 +16,17 @@ import java.util.Map;
 public class GlobalException {
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<?> runtimeExceptionHandler(RuntimeException e) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errors Server : "+ e.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage()));
     }
 
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<?> badRequestHandler(BadRequestException e){
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Errors Request: "+ e.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
     }
 
     @ExceptionHandler(NullPointerException.class)
     public ResponseEntity<?> nullPointerHandler(NullPointerException exception){
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Errors Not Found: "+ exception.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiErrorResponse(HttpStatus.NOT_FOUND.value(), exception.getMessage()));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

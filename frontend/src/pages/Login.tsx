@@ -1,6 +1,9 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { login } from "../services/AuthService";
 import { Navigate, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import { Button } from "antd";
+import { useState } from "react";
 
 type Inputs = {
   email: string;
@@ -15,13 +18,19 @@ export default function Login() {
     formState: { errors },
   } = useForm<Inputs>();
 
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  
   const loginHandler: SubmitHandler<Inputs> = async (data) => {
+    setLoading(true);
     const loged = await login(data);
     console.log("Login page console " + loged);
-
     if (loged) {
       navigate("/dashboard");
+      toast.success("Đăng nhập thành công !");
+    } else {
+      // toast.error("Tài khoản hoặc mật khẩu không chính xác !");
+      setLoading(false);
     }
   };
 
@@ -63,9 +72,22 @@ export default function Login() {
             )}
           </div>
           <div className="mb-4">
-            <button className="w-full p-2 bg-blue-700 text-white rounded-md">
+            <Button
+              className="w-full p-4"
+              loading={loading}
+              type="primary"
+              htmlType="submit"
+            >
               Đăng nhập
-            </button>
+            </Button>
+          </div>
+          <div className="mb-4">
+            <a href="" className="text-sm text-blue-700 hover:underline">
+              Quên mật khẩu ?
+            </a>
+          </div>
+          <div className="text-sm text-slate-600">
+            Chào mừng bạn đến với ứng dụng quản lý trung tâm
           </div>
         </form>
       </div>

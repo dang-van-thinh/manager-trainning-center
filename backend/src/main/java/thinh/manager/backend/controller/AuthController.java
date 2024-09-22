@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import thinh.manager.backend.model.dto.auth.AuthRequest;
 import thinh.manager.backend.service.AuthService;
 
 @RestController
@@ -18,8 +19,8 @@ public class AuthController {
         this.authService = authService;
     }
 
-    @GetMapping("/test")
-    public ResponseEntity<?> testAuth(@RequestParam("email") String email ,@RequestParam("password") String password ){
-        return ResponseEntity.ok(authService.testAuth(email,password));
+    @PostMapping("/login")
+    public ResponseEntity<?> testAuth(@RequestBody AuthRequest request){
+        return ResponseEntity.ok(authService.authentication(request));
     }
 }
