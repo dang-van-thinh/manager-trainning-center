@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import thinh.manager.backend.entity.enums.ERole;
 
 import java.time.LocalDate;
 
@@ -15,13 +16,14 @@ import java.time.LocalDate;
 public class Student extends Person{
     private String level; // trinh do hoc van
     @Builder
-    public Student(String id , LocalDate birthDay,String gender,String email,String fullName, String phone , String level) {
+    public Student(String id , LocalDate birthDay, String gender, String email, String fullName, String phone , String level, ERole role) {
         super.setId(id);
         super.setBirthDay(birthDay);
         super.setGender(gender);
         super.setPhone(phone);
         super.setFullName(fullName);
         super.setEmail(email);
+        super.setRole(role);
         this.level = level;
     }
 }

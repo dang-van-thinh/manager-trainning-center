@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import thinh.manager.backend.entity.enums.ERole;
 
 import java.time.LocalDate;
 
@@ -41,6 +42,8 @@ public class    TeacherDto {
     @NotNull(message = "Không được để trống trường này !")
     private Double hourlyRate;
 
+    private ERole role;
+
     public static TeacherDto toTeacherDto(Teacher teacher) {
         return TeacherDto.builder()
                 .id(teacher.getId())
@@ -52,6 +55,7 @@ public class    TeacherDto {
                 .gender(teacher.getGender())
                 .qualifications(teacher.getQualifications())
                 .hourlyRate(teacher.getHourlyRate())
+                .role(teacher.getRole())
                 .build();
     }
 

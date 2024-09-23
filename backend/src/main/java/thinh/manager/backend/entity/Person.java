@@ -2,6 +2,7 @@ package thinh.manager.backend.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import thinh.manager.backend.entity.enums.ERole;
 
 import java.time.LocalDate;
 @MappedSuperclass
@@ -17,4 +18,6 @@ public abstract class Person {
     private LocalDate birthDay;
     private String email;
     private String phone;
+    @Enumerated(EnumType.STRING)
+    private ERole role;
 }

@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import thinh.manager.backend.entity.enums.ERole;
 
 import java.time.LocalDate;
 
@@ -28,7 +29,7 @@ public class StudentDto {
     private String phone;
     @NotEmpty(message = "Không được để trống !")
     private String level;
-
+    private ERole role;
     public static StudentDto toStudentDto(Student student) {
         return StudentDto.builder()
                 .id(student.getId())
@@ -38,6 +39,7 @@ public class StudentDto {
                 .fullName(student.getFullName())
                 .gender(student.getGender())
                 .level(student.getLevel())
+                .role(student.getRole())
                 .build();
     }
 }

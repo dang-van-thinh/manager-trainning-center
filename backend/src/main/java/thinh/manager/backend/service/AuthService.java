@@ -3,9 +3,9 @@ package thinh.manager.backend.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import thinh.manager.backend.entity.Mananger;
+import thinh.manager.backend.entity.User;
 import thinh.manager.backend.model.dto.auth.AuthRequest;
-import thinh.manager.backend.repository.ManagerRepository;
+import thinh.manager.backend.repository.UserRepository;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,16 +14,16 @@ import java.util.Optional;
 @Service
 @Slf4j
 public class AuthService {
-    private final ManagerRepository managerRepository;
+    private final UserRepository userRepository;
     @Autowired
     public AuthService (
-            ManagerRepository managerRepository
+            UserRepository userRepository
     ){
-       this.managerRepository = managerRepository;
+       this.userRepository = userRepository;
     }
 
     public Boolean authentication(AuthRequest request){
-        Optional<Mananger> mananger = managerRepository.findByEmailAndAndPassword(request.getEmail(), request.getPassword());
+        Optional<User> mananger = userRepository.findByEmail(request.getEmail());
         if (mananger.isPresent()){
             return true;
         }

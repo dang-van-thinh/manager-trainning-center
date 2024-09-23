@@ -1,6 +1,6 @@
 import toast from "react-hot-toast";
 import axiosInstance from "../configs/axios";
-import type { ErrorResponse } from "../types/ErrorsResponse";
+import type { ErrorResponse } from "../models/ErrorsResponse";
 
 type LoginPayLoad = {
   email: string;

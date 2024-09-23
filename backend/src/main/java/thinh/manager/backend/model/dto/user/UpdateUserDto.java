@@ -1,13 +1,12 @@
-package thinh.manager.backend.model.dto.manager;
+package thinh.manager.backend.model.dto.user;
 
-import thinh.manager.backend.entity.Mananger;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.time.LocalDate;
 
 @Data
-public class UpdateManagerDto {
+public class UpdateUserDto {
     @NotNull(message = "Không được để trống trường này !")
     private String username;
     @NotNull(message = "Không được để trống trường này !")
