@@ -30,7 +30,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         log.info("Security filterChain is run !");
         return httpSecurity.authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/students").authenticated()
+                        .requestMatchers("/api/students").hasRole("ADMIN")
                         .anyRequest().permitAll()
                 )
                 .csrf(AbstractHttpConfigurer::disable)

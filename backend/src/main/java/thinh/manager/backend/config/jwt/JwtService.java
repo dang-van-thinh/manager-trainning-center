@@ -20,6 +20,7 @@ public class JwtService {
         log.info("Chạy vào generateToken ");
         return Jwts.builder()
                 .setSubject(email)
+                .claim("role","ADMIN")
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 10)) // set time 10phut
                 .signWith(SignatureAlgorithm.HS256,SecretKey)
                 .compact();

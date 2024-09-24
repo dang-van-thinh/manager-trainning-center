@@ -26,7 +26,6 @@ public class UserDetailService implements UserDetailsService {
 //        c1:
 //        UserDto userDto = UserDto.toUserDto(user.get());
 //        UserInfoDetail userInfoDetail = new UserInfoDetail(userDto);
-
         // c2:
         UserInfoDetail users = user.map(UserDto::toUserDto).map(UserInfoDetail::new)
                 .orElseThrow(() -> new UsernameNotFoundException("Email hoặc mật khẩu không chính xác !"));

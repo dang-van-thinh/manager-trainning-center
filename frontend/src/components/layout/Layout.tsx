@@ -10,7 +10,7 @@ import {
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Button, Layout, Menu, theme } from "antd";
-import { Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 
 const { Header, Sider, Content } = Layout;
 
@@ -104,7 +104,7 @@ const Layouts: React.FC = () => {
             borderRadius: borderRadiusLG,
           }}
         >
-          DDaay laf noi dung
+          Đây là nội dụng
         </Content>
       </Layout>
     </Layout>

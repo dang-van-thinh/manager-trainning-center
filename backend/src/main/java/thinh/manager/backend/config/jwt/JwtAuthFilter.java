@@ -62,7 +62,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                 }
             }
-        }catch (Exception exception){
+        } catch (Exception exception) {
             ObjectMapper mapper = new ObjectMapper(); // dung de map tu class sang json
             ApiErrorResponse errorResponse = new ApiErrorResponse();
             // Bắt lỗi khi JWT hết hạn
