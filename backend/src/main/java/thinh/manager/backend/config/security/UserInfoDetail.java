@@ -22,12 +22,10 @@ public class UserInfoDetail implements UserDetails {
 
     private String username; // dang check bang email
     private String password;
-    private ERole role;
     private List<GrantedAuthority> authorities;
 
     public UserInfoDetail(UserDto userDto) {
         log.info("UserInfoDetail iss run !");
-        this.role = userDto.getRole();
         this.password = userDto.getPassword();
         this.username = userDto.getEmail(); // ne chu y ko oang
         this.authorities = List.of(userDto.getRole()).stream()

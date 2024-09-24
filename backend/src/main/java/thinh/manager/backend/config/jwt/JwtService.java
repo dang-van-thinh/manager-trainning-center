@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -13,14 +14,14 @@ import java.util.function.Function;
 @Component
 @Slf4j
 public class JwtService {
-
-    private final String SecretKey = "ZjhjZDg0NGU4MGExYmE1MDdkZjQyMDM4OTBjMTY5MmNiNzM0YWUzM2M4YTE1NjkyNzA4YjljNTgxMzFkMDNjYw";
+    @Value("${jwt.serect-key}")
+    private String SecretKey;
 
     public String generateToken(String email) {
         log.info("Chạy vào generateToken ");
         return Jwts.builder()
                 .setSubject(email)
-                .claim("role","ADMIN")
+                .claim("role","ADMIN") // thu voi nhung thong tin khac
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 10)) // set time 10phut
                 .signWith(SignatureAlgorithm.HS256,SecretKey)
                 .compact();
@@ -65,7 +66,4 @@ public class JwtService {
         final Claims claims = decodeToken(token);
         return claimsResolver.apply(claims);
     }
-
-
-
 }
