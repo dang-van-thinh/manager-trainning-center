@@ -116,12 +116,12 @@ private final StudentService studentService;
 
     @Transactional(rollbackFor = BadRequestException.class)
     public ClassesDto store(ClassesDto request) throws BadRequestException {
-        String teacherId = teacherService.getTeacher(request.getTeacher_id()).getId();
-        String classRoomId = classRoomService.getRoom(request.getClassroom_id()).getId();
+        String teacherId = teacherService.getTeacher(request.getTeacherId()).getId();
+        String classRoomId = classRoomService.getRoom(request.getClassroomId()).getId();
 
         // them lich day cho giao vien
         // check trung lịch
-        if (isDuplicateRoom(request.getClassroom_id(),request.getSession(),request.getDayOfWeek())){
+        if (isDuplicateRoom(request.getClassroomId(),request.getSession(),request.getDayOfWeek())){
             throw new BadRequestException("Lớp học bị trùng thời gian !");
         }
 
@@ -140,7 +140,7 @@ private final StudentService studentService;
         Classes classed = repository.save(classes);
 
 
-        if (!scheduleService.isDuplicateSchedule(request.getTeacher_id(), request.getSession(), request.getDayOfWeek())) {
+        if (!scheduleService.isDuplicateSchedule(request.getTeacherId(), request.getSession(), request.getDayOfWeek())) {
             scheduleService.create(ScheduleDto.builder()
                     .classesID(classed.getId())
                     .teacher(classed.getTeacher())
@@ -165,9 +165,9 @@ private final StudentService studentService;
         ClassesDto classesDto = ClassesDto.toClassesDto(this.getClasses(classId));
         List<StudentDto> studentDtoList = studentService.getAllStudentByClassesID(classesDto.getId()); ;
 
-        TeacherDto teacherDto = teacherService.getTeacherDto(classesDto.getTeacher_id());
+        TeacherDto teacherDto = teacherService.getTeacherDto(classesDto.getTeacherId());
 
-        ClassRoomDto classRoomDto = classRoomService.getRoomDto(classesDto.getClassroom_id());
+        ClassRoomDto classRoomDto = classRoomService.getRoomDto(classesDto.getClassroomId());
 
         CourseDto courseDto =CourseDto.courseDto( courseService.getCourse(classesDto.getCourse()));
 

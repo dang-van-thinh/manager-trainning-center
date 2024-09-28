@@ -27,19 +27,14 @@ public class Classes {
     private LocalDate timeStart;
     @Column(name = "time_end")
     private LocalDate timeEnd;
-
     @Column(name = "course_id")
     private String course;
-
     @Column(name = "day_id")
     private Integer dayOfWeek; // ngay hoc trong tuan
-
     @Column(name = "session_id")
     private Integer session; // ca hoc
-
     @Column(name = "teacher_id")
     private String teacher; // giao vien day
-
     @Column(name = "class_room_id")
     private String classRoom; // lop day
 }

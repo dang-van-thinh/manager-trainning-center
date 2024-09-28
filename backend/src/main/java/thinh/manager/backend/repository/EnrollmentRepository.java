@@ -1,5 +1,6 @@
 package thinh.manager.backend.repository;
 
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import thinh.manager.backend.entity.Course;
 import thinh.manager.backend.entity.Enrollment;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface EnrollmentRepository extends JpaRepository<Enrollment,String> {
+public interface EnrollmentRepository extends JpaRepository<Enrollment,String> , JpaSpecificationExecutor<Enrollment> {
     List<Enrollment> findAllByClassesIdIs(String id);
     @Query(value = "select * from enrollment e where e.student_id = :studentId and e.classes_id = :classesId",nativeQuery = true)
     Optional<Enrollment> findAllByStudent(@Param("studentId") String studentId,@Param("classesId") String classesId);

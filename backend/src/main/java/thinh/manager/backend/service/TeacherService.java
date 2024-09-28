@@ -26,7 +26,9 @@ public class TeacherService {
     public List<TeacherDto> getAll() {
         return repository.findAll().stream().map(TeacherDto::toTeacherDto).toList();
     }
-    
+
+
+    // hiển thị thông tin 1 giảng viên
     public TeacherDto getTeacherDto(String id) {
         return TeacherDto.toTeacherDto(repository.findById(id)
                 .orElseThrow(() -> new NullPointerException("Không tìm thấy giáo viên phù hợp !")));

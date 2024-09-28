@@ -24,7 +24,7 @@ public interface ClassesRepository extends JpaRepository<Classes,String> {
             "and s.id = e.studentId " +
             "and s.id = :studentId " +
             "and c.session = :sessionId " +
-            "and c.dayOfWeek = :dayId")
+            "and c.dayOfWeek in :dayId")
     Optional<Classes> findClassOfStudentBySessionOfDay(@Param("studentId") String studentId ,
                                                @Param("sessionId") Integer sessionId,
                                                @Param("dayId") Integer dayId);

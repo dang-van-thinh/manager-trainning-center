@@ -1,11 +1,11 @@
 package thinh.manager.backend.service;
 
+import jakarta.persistence.criteria.Predicate;
 import thinh.manager.backend.entity.*;
 import thinh.manager.backend.entity.enums.PaymentMethod;
 import thinh.manager.backend.model.dto.classes.ClassesDto;
 import thinh.manager.backend.model.dto.classes.ClassesResponse;
 import thinh.manager.backend.model.dto.classroom.ClassRoomDto;
-import thinh.manager.backend.model.dto.course.CourseDto;
 import thinh.manager.backend.model.dto.dtoMore.CourseClassesDto;
 import thinh.manager.backend.model.dto.enrollment.EnrollmentDto;
 import thinh.manager.backend.model.dto.enrollment.UpdateEnrollment;
@@ -76,7 +76,7 @@ public class EnrollmentService {
         incomeService.create(IncomeDto.builder()
                 .amount(course.getPrice())
                 .title("Học phí của học viên")
-                .description( "Tiền học của học viên " + student.getFullName())
+                .description("Tiền học của học viên " + student.getFullName())
                 .date(LocalDate.now())
                 .studentId(student.getId())
                 .receivedFrom(student.getFullName())
@@ -84,7 +84,6 @@ public class EnrollmentService {
                 .note("Học viên thanh toán tiền đăng ký khóa học " + course.getName())
                 .courseId(course.getId())
                 .build());
-
         // them hoc vien vao lop
         Enrollment enrollment = Enrollment.builder()
                 .classesId(classes.getId())
@@ -109,7 +108,6 @@ public class EnrollmentService {
                 }
             }
         }
-
         return StudentResponse.builder()
                 .id(studentDto.getId())
                 .fullName(studentDto.getFullName())
@@ -119,9 +117,7 @@ public class EnrollmentService {
                 .birthDay(studentDto.getBirthDay())
                 .classesResponses(classesDtosResponse)
                 .build();
-
     }
-
 
     @Transactional
     public void delete(EnrollmentDto enrollmentDto) {
@@ -167,21 +163,18 @@ public class EnrollmentService {
         for (Classes classes1 : classes) {
             TeacherDto teacherDto = new TeacherDto();
             ClassRoomDto classRoomDto = new ClassRoomDto();
-
             // ss de lay ra teacher day lop do
             for (TeacherDto teacher : teacherList) {
                 if (teacher.getId().equals(classes1.getTeacher())) {
                     teacherDto = teacher;
                 }
             }
-
             //ss de lay ra phong hoc cua lop do
             for (ClassRoomDto room : classRoomList) {
                 if (room.getId().equals(classes1.getClassRoom())) {
                     classRoomDto = room;
                 }
             }
-
             // them vao danh sách response
             classesResponses.add(
                     ClassesResponse.builder()
@@ -243,8 +236,25 @@ public class EnrollmentService {
         } else {
 
         }
-
         return EnrollmentDto.enrollmentDto(enrollmented);
     }
 
+    public List<Enrollment> specificationTest(String studentId) {
+//        Specification<Enrollment> spec = Specification.where(EnrollmentSpecification.joinEnrollment());
+//        if (studentId != null) {
+//            spec = spec.and(EnrollmentSpecification.hasStudentId(studentId));
+//        }
+//        log.info("specification is run !");
+//        return repository.findAll(spec);
+
+        return repository.findAll((root, query, builder) -> {
+            List<Predicate> predicates = new ArrayList<>();
+
+            if (studentId != null){
+                predicates.add(builder.equal(root.get("studentId") , studentId));
+            }
+
+            return query.where(predicates.toArray(new Predicate[predicates.size()])).getRestriction();
+        });
+    }
 }

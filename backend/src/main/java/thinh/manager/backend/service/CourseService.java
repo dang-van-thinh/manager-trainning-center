@@ -22,7 +22,6 @@ public class CourseService {
     private final CourseRepository repository;
     private final ClassesRepository classesRepository;
 
-
     @Autowired
     public CourseService(
             CourseRepository repository,
@@ -32,19 +31,21 @@ public class CourseService {
         this.classesRepository = classesRepository;
     }
 
-    public boolean isStudentInCourse(String studentId,String courseId){
-        Optional<Course> course = repository.findCourseByStudentIdAndCourseId(studentId,courseId);
-        if (course.isPresent()){
+    public boolean isStudentInCourse(String studentId, String courseId) {
+        Optional<Course> course = repository.findCourseByStudentIdAndCourseId(studentId, courseId);
+        if (course.isPresent()) {
             return true;
         }
         return false;
     }
 
-    public CourseClassesDto getCourseByClassId(String classId){
+    public CourseClassesDto getCourseByClassId(String classId) {
         Optional<CourseClassesDto> courseClassesDto = repository.findCourseByClass(classId);
-        if (courseClassesDto.isEmpty()){
+
+        if (courseClassesDto.isEmpty()) {
             throw new NullPointerException("Không tìm thấy khóa học phù hợp !");
         }
+
         return courseClassesDto.get();
     }
 
@@ -52,46 +53,45 @@ public class CourseService {
         Course course = Course.builder()
                 .name(courseDto.getName())
                 .price(courseDto.getPrice())
+                .daysToComplete(courseDto.getDaysToComplete())
+                .startDate(courseDto.getStartDate())
+                .endDate(courseDto.getEndDate())
                 .build();
-
         return CourseDto.courseDto(repository.save(course));
     }
 
-    public List<CourseDto> getAllCourseDto(){
+    public List<CourseDto> getAllCourseDto() {
         return repository.findAll().stream().map(CourseDto::courseDto).toList();
     }
 
     public List<CourseResponse> getAll() {
         List<Classes> classesList = classesRepository.findAll();
-
         List<Course> courseList = repository.findAll();
-
         List<CourseResponse> courseResponses = new ArrayList<>();
 
-
-        for (Course course : courseList) {
+        courseList.forEach(course -> {
             List<Classes> classesResponse = new ArrayList<>();
-            for (Classes classes : classesList) {
+            classesList.forEach(classes -> {
                 if (course.getId().equals(classes.getCourse())) {
                     classesResponse.add(classes);
                 }
-            }
-
+            });
             courseResponses.add(CourseResponse.builder()
-                            .id(course.getId())
-                            .name(course.getName())
-                            .price(course.getPrice())
-                            .numberClassOfCourse(classesResponse.size())
+                    .id(course.getId())
+                    .name(course.getName())
+                    .price(course.getPrice())
+                    .startDate(course.getStartDate())
+                    .endDate(course.getEndDate())
+                    .daysToComplete(course.getDaysToComplete())
+                    .numberClassOfCourse(classesResponse.size())
                     .build());
-        }
+        });
 
         return courseResponses;
     }
 
     public CourseResponse getOne(String id) {
-        Course course = repository.findById(id)
-                .orElseThrow(() -> new NullPointerException("Không tìm thấy khóa học phù hợp !"));
-
+        Course course = getCourse(id);
         List<Classes> classesOfCourse = classesRepository.getAllByCourseIs(id);
 
         return CourseResponse.builder()
@@ -99,6 +99,10 @@ public class CourseService {
                 .name(course.getName())
                 .price(course.getPrice())
                 .classes(classesOfCourse)
+                .numberClassOfCourse(classesOfCourse.size())
+                .daysToComplete(course.getDaysToComplete())
+                .startDate(course.getStartDate())
+                .endDate(course.getEndDate())
                 .build();
     }
 
@@ -113,9 +117,21 @@ public class CourseService {
 
     public CourseDto update(String id, UpdateCourseDto request) {
         Course coursed = this.getCourse(id);
-
-        coursed.setName(request.getName());
-        coursed.setPrice(request.getPrice());
+        if (request.getName() != null) {
+            coursed.setName(request.getName());
+        }
+        if (request.getPrice() != null) {
+            coursed.setPrice(request.getPrice());
+        }
+        if (request.getDayToComplete() != null) {
+            coursed.setDaysToComplete(request.getDayToComplete());
+        }
+        if (request.getStartDate() != null) {
+            coursed.setStartDate(request.getStartDate());
+        }
+        if (request.getEndDate() != null) {
+            coursed.setEndDate(request.getEndDate());
+        }
 
         return CourseDto.courseDto(repository.save(coursed));
     }

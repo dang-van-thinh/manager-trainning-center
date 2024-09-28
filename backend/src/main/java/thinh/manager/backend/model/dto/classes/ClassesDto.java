@@ -1,5 +1,6 @@
 package thinh.manager.backend.model.dto.classes;
 
+import jakarta.persistence.Column;
 import thinh.manager.backend.entity.Classes;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -8,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -26,9 +28,11 @@ public class ClassesDto {
     @NotNull(message = "Không được để trống trường này !")
     private LocalDate timeEnd;
     @NotNull(message = "Không được để trống trường này !")
-    private String classroom_id;
+    @Column(name = "classroom_id")
+    private String classroomId;
     @NotNull(message = "Không được để trống trường này !")
-    private String teacher_id;
+    @Column(name = "teacher_id")
+    private String teacherId;
     @NotNull(message = "Không được để trống trường này !")
     private Integer session;
     @NotNull(message = "Không được để trống trường này !")
@@ -44,8 +48,8 @@ public class ClassesDto {
                 .description(classes.getDescription())
                 .timeEnd(classes.getTimeEnd())
                 .timeStart(classes.getTimeStart())
-                .classroom_id(classes.getClassRoom())
-                .teacher_id(classes.getTeacher())
+                .classroomId(classes.getClassRoom())
+                .teacherId(classes.getTeacher())
                 .session(classes.getSession())
                 .dayOfWeek(classes.getDayOfWeek())
                 .course(classes.getCourse())

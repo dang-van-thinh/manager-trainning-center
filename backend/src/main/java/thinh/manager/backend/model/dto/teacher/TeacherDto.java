@@ -14,34 +14,24 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class    TeacherDto {
+public class TeacherDto {
     private String id;
-
     @NotNull(message = "Không được để trống trường này !")
     private String fullName;
-
     @NotNull(message = "Không được để trống trường này !")
     private String gender;
-
     @NotNull(message = "Không được để trống trường này !")
     private LocalDate birthDay;
-
     @NotNull(message = "Không được để trống trường này !")
     private String email;
-
     @NotNull(message = "Không được để trống trường này !")
     private String phone;
-
-
     @NotNull(message = "Không được để trống trường này !")
     private String specialize; // chuyên môn
-
     @NotNull(message = "Không được để trống trường này !")
     private String qualifications; // trình độ
-
     @NotNull(message = "Không được để trống trường này !")
     private Double hourlyRate;
-
     private ERole role;
 
     public static TeacherDto toTeacherDto(Teacher teacher) {

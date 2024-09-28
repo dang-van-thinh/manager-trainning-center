@@ -20,7 +20,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import thinh.manager.backend.config.jwt.JwtAuthFilter;
 
 @Configuration
-@EnableWebSecurity
+//@EnableWebSecurity
 @Slf4j
 public class SecurityConfig {
     @Autowired
@@ -28,8 +28,8 @@ public class SecurityConfig {
     private JwtAuthFilter authFilter;
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-        log.info("Security filterChain is run !");
         return httpSecurity.authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/users").permitAll()
                         .requestMatchers("/api/students").hasRole("ADMIN")
                         .anyRequest().permitAll()
                 )
@@ -41,13 +41,11 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-        log.info("Security authenticationManager is run !");
         return config.getAuthenticationManager();
     }
 
     @Bean
     public UserDetailService userDetailService(){
-        log.info("Security userDetailService is run !");
         return new UserDetailService();
     }
 
@@ -58,7 +56,6 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
-        log.info("Security authenticationProvider is run !");
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(userDetailService());
         authenticationProvider.setPasswordEncoder(passwordEncoder());

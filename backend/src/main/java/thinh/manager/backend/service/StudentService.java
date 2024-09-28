@@ -22,10 +22,11 @@ public class StudentService {
     private final StudentRepository repo;
     private final ClassesService classesService;
     private final EnrollmentService enrollmentService;
+
     @Autowired
     public StudentService(
             StudentRepository studentRepository,
-           @Lazy ClassesService classesService,
+            @Lazy ClassesService classesService,
             @Lazy EnrollmentService enrollmentService
     ) {
         this.repo = studentRepository;
@@ -68,7 +69,7 @@ public class StudentService {
         if (studentDto.getBirthDay() != null) {
             student.setBirthDay(studentDto.getBirthDay());
         }
-        if (studentDto.getLevel() != null){
+        if (studentDto.getLevel() != null) {
             student.setLevel(studentDto.getLevel());
         }
         return StudentDto.toStudentDto(repo.save(student));

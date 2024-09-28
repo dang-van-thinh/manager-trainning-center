@@ -1,13 +1,14 @@
 package thinh.manager.backend.model.dto.course;
 
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+
+import java.time.LocalDate;
 
 @Data
 public class UpdateCourseDto {
-    @NotNull(message = "Không được để trống trường này !")
     private String name;
-    @NotNull(message = "Không được để trống trường này !")
-    private double price;
-
+    private Double price;
+    private Integer dayToComplete;
+    private LocalDate startDate;
+    private LocalDate endDate;
 }

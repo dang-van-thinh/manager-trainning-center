@@ -26,7 +26,7 @@ public class ClassesResponse {
     private LocalDate timeStart;
     private LocalDate timeEnd;
     private int sessionId;
-    private int dayId;
+    private Integer dayId;
     private TeacherDto teacher;
     private ClassRoomDto room;
     private CourseDto course;

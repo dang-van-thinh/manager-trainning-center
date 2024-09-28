@@ -1,6 +1,7 @@
 package thinh.manager.backend.repository;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import thinh.manager.backend.entity.Classes;
 import thinh.manager.backend.entity.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,9 +13,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Repository
-public interface StudentRepository extends JpaRepository<Student, String> {
-
-
+public interface StudentRepository extends JpaRepository<Student, String> , JpaSpecificationExecutor<Student> {
     @Query(value = "select s.* from student s join enrollment e on e.student_id = s.id where e.classes_id = :classesID", nativeQuery = true)
     List<Student> getAllStudentByClassesID(@Param("classesID") String classesID);
 

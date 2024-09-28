@@ -25,6 +25,12 @@ public class EnrollmentController {
         this.service = service;
     }
 
+    @GetMapping("/test")
+    public ResponseEntity<?> test(@RequestParam("studentId") String studentId){
+        System.out.println(studentId);
+        return ResponseEntity.ok(service.specificationTest(studentId));
+    }
+
     @Operation(summary = "Thêm mới thành viên vào lớp",description = "Thêm mới học viên vào lớp !")
     @PostMapping
     public ResponseEntity<?> create(@RequestBody @Valid EnrollmentDto enrollmentDto) throws BadRequestException {

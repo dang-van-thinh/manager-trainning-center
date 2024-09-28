@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@Tag(name = "Manager Userss",description = "Quản lý quản trị viên")
+@Tag(name = "Manager Users",description = "Quản lý quản trị viên")
 @RequestMapping("api/users")
 public class UserController {
     @Autowired
