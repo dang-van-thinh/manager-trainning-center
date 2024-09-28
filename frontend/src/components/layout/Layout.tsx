@@ -10,62 +10,81 @@ import {
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Button, Layout, Menu, theme } from "antd";
-import { Link, Outlet } from "react-router-dom";
+import { Link } from "react-router-dom";
+import ListUser from "../../pages/admin/user/ListUser";
+import Dashboard from "../../pages/admin/Dashboard";
 
 const { Header, Sider, Content } = Layout;
 
-const items: MenuProps["items"] = [
-  {
-    key: "1",
-    icon: <PieChartOutlined />,
-    label: "Option 1",
-  },
-  {
-    key: "2",
-    icon: <DesktopOutlined />,
-    label: "Option 2",
-  },
-  {
-    key: "sub1",
-    icon: <UserOutlined />,
-    label: "User",
-    children: [
-      {
-        key: "3",
-        label: "Tom",
-      },
-      {
-        key: "4",
-        label: "Bill",
-      },
-      {
-        key: "5",
-        label: "Alex",
-      },
-    ],
-  },
-  {
-    key: "sub2",
-    icon: <TeamOutlined />,
-    label: "Team",
-    children: [
-      {
-        key: "6",
-        label: "Team 1",
-      },
-      {
-        key: "7",
-        label: "Team 2",
-      },
-    ],
-  },
-  {
-    key: "9",
-    icon: <FileOutlined />,
-  },
-];
-
 const Layouts: React.FC = () => {
+  const [selectMenuItem, setSelectMenuItem] = useState<string>("/dashboard");
+
+  const renderContent = () => {
+    switch (selectMenuItem) {
+      case "users":
+        return <ListUser />;
+      case "/":
+        return <Dashboard />;
+      default:
+        return <div>deklkasdj</div>;
+    }
+  };
+
+  const items: MenuProps["items"] = [
+    {
+      key: "1",
+      icon: <PieChartOutlined />,
+      label: <Link to={"/auth/login"}>Đăng nhập</Link>,
+      title: "Đăng nhập",
+    },
+    {
+      key: "2",
+      icon: <DesktopOutlined />,
+      label: "Option 2",
+    },
+    {
+      key: "sub1",
+      icon: <UserOutlined />,
+      label: "User",
+      children: [
+        {
+          key: "3",
+          label: "Danh sách người dùng",
+          onClick: () => {
+            setSelectMenuItem("users");
+          },
+        },
+        {
+          key: "4",
+          label: <Link to={"/auth/forgot-password"}>Quên mật khẩu</Link>,
+        },
+        {
+          key: "5",
+          label: <Link to={"/auth/forgot-password"}>Quên mật khẩu</Link>,
+        },
+      ],
+    },
+    {
+      key: "sub2",
+      icon: <TeamOutlined />,
+      label: "Team",
+      children: [
+        {
+          key: "6",
+          label: "Team 1",
+        },
+        {
+          key: "7",
+          label: "Team 2",
+        },
+      ],
+    },
+    {
+      key: "9",
+      icon: <FileOutlined />,
+    },
+  ];
+
   const [collapsed, setCollapsed] = useState(true);
   const {
     token: { colorBgContainer, borderRadiusLG },
@@ -104,7 +123,7 @@ const Layouts: React.FC = () => {
             borderRadius: borderRadiusLG,
           }}
         >
-          Đây là nội dụng
+          {renderContent()}
         </Content>
       </Layout>
     </Layout>

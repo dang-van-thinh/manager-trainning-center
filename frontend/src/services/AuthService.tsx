@@ -6,7 +6,10 @@ type LoginPayLoad = {
   email: string;
   password: string;
 };
-
+type LoginResponse = {
+  code: number;
+  message: string;
+};
 const login = (login: LoginPayLoad): any => {
   // console.log(handlerApi(login));
   return handlerApi(login);
@@ -15,10 +18,12 @@ const login = (login: LoginPayLoad): any => {
 const handlerApi = async (data: LoginPayLoad): Promise<boolean> => {
   try {
     const result = await axiosInstance.post(`/auth/login`, data);
-
-    console.log(result);
-
+    console.log(result.data);
     if (result.status === 200) {
+      console.log("200 code");
+      if (!localStorage.getItem("_tokenLogin")) {
+        localStorage.setItem("_tokenLogin", result.data.message);
+      }
       return true;
     }
     return false;

@@ -1,22 +1,31 @@
-import { StrictMode } from "react";
+import { StrictMode, useState } from "react";
 import { createRoot } from "react-dom/client";
-
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-
-import Login from "./pages/Login";
-import Dashboard from "./pages/admin/Dashboard";
 import "./index.css";
 import { Toast, ToastBar, Toaster } from "react-hot-toast";
+import ListUser from "./pages/admin/user/ListUser";
+
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Login from "./pages/auth/Login";
+import Dashboard from "./pages/admin/Dashboard";
 import Layouts from "./components/layout/Layout";
+import ForgotPassword from "./pages/auth/ForgotPassword";
+
 const router = createBrowserRouter([
   {
-    path: "/login",
+    path: "/auth/login",
     element: <Login />,
+  },
+  {
+    path: "/auth/forgot-password",
+    element: <ForgotPassword />,
   },
   {
     path: "/",
     element: <Layouts />,
-    children: [{ path: "/dashboard", element: <Dashboard /> }],
+    // children: [
+    //   { path: "/dashboard", element: <Dashboard /> },
+    //   { path: "/user/list", element: <ListUser /> },
+    // ],
   },
 ]);
 

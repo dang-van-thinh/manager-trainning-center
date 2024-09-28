@@ -1,6 +1,6 @@
 import { useForm, SubmitHandler } from "react-hook-form";
-import { login } from "../services/AuthService";
-import { Navigate, useNavigate } from "react-router-dom";
+import { login } from "../../services/AuthService";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { Button } from "antd";
 import { useState } from "react";
@@ -20,7 +20,7 @@ export default function Login() {
 
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  
+
   const loginHandler: SubmitHandler<Inputs> = async (data) => {
     setLoading(true);
     const loged = await login(data);
@@ -37,7 +37,7 @@ export default function Login() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-zinc-100">
       <div className="shadow-lg w-full max-w-md p-8  font-semibold bg-white rounded-xl ">
-        <h2 className="text-center uppercase font-bold mb-5">Login</h2>
+        <h2 className="text-center uppercase font-bold mb-5">Đăng nhập</h2>
         <form action="" onSubmit={handleSubmit(loginHandler)}>
           <div className="mb-4">
             <label htmlFor="email" className="block text-sm mb-2 font-bold">
@@ -82,9 +82,15 @@ export default function Login() {
             </Button>
           </div>
           <div className="mb-4">
-            <a href="" className="text-sm text-blue-700 hover:underline">
+            <Link
+              to={"/auth/forgot-password"}
+              className="text-md text-blue-700 hover:underline"
+            >
+              Quên mật khẩu
+            </Link>
+            {/* <a href="" className="text-sm text-blue-700 hover:underline">
               Quên mật khẩu ?
-            </a>
+            </a> */}
           </div>
           <div className="text-sm text-slate-600">
             Chào mừng bạn đến với ứng dụng quản lý trung tâm
