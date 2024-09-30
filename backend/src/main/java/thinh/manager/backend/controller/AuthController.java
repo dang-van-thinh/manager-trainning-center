@@ -10,7 +10,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
-import thinh.manager.backend.config.jwt.JwtService;
+import thinh.manager.backend.config.jwt.JwtProvider;
 import thinh.manager.backend.model.dto.auth.AuthRequest;
 import thinh.manager.backend.model.response.TokenResponse;
 import thinh.manager.backend.service.AuthService;
@@ -20,17 +20,17 @@ import thinh.manager.backend.service.AuthService;
 @RequestMapping("api/auth")
 public class AuthController {
     private AuthService authService;
-    private JwtService jwtService;
+    private JwtProvider jwtProvider;
     private AuthenticationManager authenticationManager;
 
     @Autowired
     public AuthController(
             AuthService authService,
-            JwtService jwtService,
+            JwtProvider jwtProvider,
             AuthenticationManager authenticationManager
     ) {
         this.authService = authService;
-        this.jwtService = jwtService;
+        this.jwtProvider = jwtProvider;
         this.authenticationManager = authenticationManager;
     }
 
@@ -39,7 +39,7 @@ public class AuthController {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(),request.getPassword()));
         if (authentication.isAuthenticated()){
-            return ResponseEntity.ok(new TokenResponse(HttpStatus.OK.value(), jwtService.generateToken(request.getEmail())));
+            return ResponseEntity.ok(new TokenResponse(HttpStatus.OK.value(), jwtProvider.generateToken(request.getEmail())));
         }else {
             throw new UsernameNotFoundException("Request không hợp lệ !");
         }

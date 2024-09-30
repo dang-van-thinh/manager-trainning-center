@@ -13,7 +13,7 @@ import java.util.function.Function;
 
 @Component
 @Slf4j
-public class JwtService {
+public class JwtProvider {
     @Value("${jwt.serect-key}")
     private String SecretKey;
 

@@ -24,7 +24,7 @@ import java.io.IOException;
 @Slf4j
 public class JwtAuthFilter extends OncePerRequestFilter {
     @Autowired
-    private JwtService service;
+    private JwtProvider service;
 
     @Autowired
     @Lazy
