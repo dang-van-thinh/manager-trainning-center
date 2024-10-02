@@ -3,9 +3,10 @@ package thinh.manager.backend.service;
 import thinh.manager.backend.entity.Student;
 import thinh.manager.backend.model.dto.classes.ClassesDto;
 import thinh.manager.backend.model.dto.enrollment.EnrollmentDto;
+import thinh.manager.backend.model.dto.student.CreateStudentRequest;
 import thinh.manager.backend.model.dto.student.StudentDto;
 import thinh.manager.backend.model.dto.student.StudentResponse;
-import thinh.manager.backend.model.dto.student.UpdateStudentDto;
+import thinh.manager.backend.model.dto.student.UpdateStudentRequest;
 import thinh.manager.backend.repository.StudentRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,55 +23,71 @@ public class StudentService {
     private final StudentRepository repo;
     private final ClassesService classesService;
     private final EnrollmentService enrollmentService;
+    private final MailService mailService;
 
     @Autowired
     public StudentService(
             StudentRepository studentRepository,
             @Lazy ClassesService classesService,
-            @Lazy EnrollmentService enrollmentService
+            @Lazy EnrollmentService enrollmentService,
+            MailService mailService
     ) {
         this.repo = studentRepository;
         this.classesService = classesService;
         this.enrollmentService = enrollmentService;
+        this.mailService=mailService;
     }
 
-    public StudentDto storeStudent(StudentDto studentDto) {
+    public StudentDto storeStudent(CreateStudentRequest request) {
         Student studentCreate = Student.builder()
-                .fullName(studentDto.getFullName())
-                .birthDay(studentDto.getBirthDay())
-                .gender(studentDto.getGender())
-                .email(studentDto.getEmail())
-                .phone(studentDto.getPhone())
-                .level(studentDto.getLevel())
+                .fullName(request.getFullName())
+                .birthDay(request.getBirthDay())
+                .gender(request.getGender())
+                .email(request.getEmail())
+                .phone(request.getPhone())
+                .level(request.getLevel())
+                .active(false)
+                .address(request.getAddress())
                 .build();
+        Student student = repo.save(studentCreate);
 
-        return StudentDto.toStudentDto(repo.save(studentCreate));
+        mailService.sendEmailVerifyEmailRegister(student.getEmail(),student.getFullName(),student.getId());
+        return StudentDto.toStudentDto(student);
+    }
+
+    public StudentDto verifyStudent(String id){
+        Student student = getStudent(id);
+        student.setActive(true);
+        return StudentDto.toStudentDto(repo.save(student));
     }
 
     public List<StudentDto> getAll() {
         return repo.findAll().stream().map(StudentDto::toStudentDto).toList();
     }
 
-    public StudentDto updateStudent(String id, UpdateStudentDto studentDto) {
+    public StudentDto updateStudent(String id, UpdateStudentRequest request) {
         Student student = this.getStudent(id);
 
-        if (studentDto.getGender() != null) {
-            student.setGender(studentDto.getGender());
+        if (request.getGender() != null) {
+            student.setGender(request.getGender());
         }
-        if (studentDto.getPhone() != null) {
-            student.setPhone(studentDto.getPhone());
+        if (request.getPhone() != null) {
+            student.setPhone(request.getPhone());
         }
-        if (studentDto.getFullName() != null) {
-            student.setFullName(studentDto.getFullName());
+        if (request.getFullName() != null) {
+            student.setFullName(request.getFullName());
         }
-        if (studentDto.getEmail() != null) {
-            student.setEmail(studentDto.getEmail());
+        if (request.getEmail() != null) {
+            student.setEmail(request.getEmail());
         }
-        if (studentDto.getBirthDay() != null) {
-            student.setBirthDay(studentDto.getBirthDay());
+        if (request.getBirthDay() != null) {
+            student.setBirthDay(request.getBirthDay());
         }
-        if (studentDto.getLevel() != null) {
-            student.setLevel(studentDto.getLevel());
+        if (request.getLevel() != null) {
+            student.setLevel(request.getLevel());
+        }
+        if (request.getAddress() != null){
+            student.setAddress(request.getAddress());
         }
         return StudentDto.toStudentDto(repo.save(student));
     }
@@ -95,7 +112,7 @@ public class StudentService {
         return repo.filterStudent(name, startDate, endDate, gender);
     }
 
-    // tim kiem hoc vien
+    // tim kiem hoc vien theo ten , khoang ngay sinh  , gioi tinh
     public List<StudentResponse> searchStudent(String name, LocalDate startDate, LocalDate endDate, String gender, String classId, String courseId) {
         List<Student> studentList = this.filterStudent(name, startDate, endDate, gender, classId, courseId);
         List<EnrollmentDto> enrollments = enrollmentService.getAll();

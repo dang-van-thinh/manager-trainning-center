@@ -39,14 +39,14 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity.cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("api/auth/login").permitAll()
                                 .requestMatchers(
+                                        "api/auth/login",
                                         "/v3/api-docs/**",
                                         "/swagger-ui/**",
-                                        "/swagger-ui.html"
+                                        "/swagger-ui.html",
+                                        "/verify-email/**"
                                 ).permitAll()
                         .anyRequest().authenticated()
-
                 )
                 .exceptionHandling(handling -> handling.authenticationEntryPoint(customJwtAuthenEntrypoint)) // cau hinh tra ra loi khi thuc hien xac thuc
                 .csrf(AbstractHttpConfigurer::disable)

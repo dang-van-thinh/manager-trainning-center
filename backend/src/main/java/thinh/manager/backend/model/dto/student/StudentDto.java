@@ -17,19 +17,16 @@ import java.time.LocalDate;
 @Builder
 public class StudentDto {
     private String id;
-    @NotEmpty(message = "Không được để trống !")
     private String fullName;
-    @NotEmpty(message = "Không được để trống !")
     private String gender;
-    @NotNull(message = "Không được để trống !")
     private LocalDate birthDay;
-    @NotEmpty(message = "Không được để trống !")
     private String email;
-    @NotEmpty(message = "Không được để trống !")
     private String phone;
-    @NotEmpty(message = "Không được để trống !")
     private String level;
     private ERole role;
+    private String image;
+    private String address;
+    private Boolean active;
     public static StudentDto toStudentDto(Student student) {
         return StudentDto.builder()
                 .id(student.getId())
@@ -40,6 +37,9 @@ public class StudentDto {
                 .gender(student.getGender())
                 .level(student.getLevel())
                 .role(student.getRole())
+                .active(student.getActive())
+                .address(student.getAddress())
+                .image(student.getImage())
                 .build();
     }
 }

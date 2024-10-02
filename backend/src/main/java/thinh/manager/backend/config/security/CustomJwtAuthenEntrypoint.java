@@ -24,10 +24,10 @@ public class CustomJwtAuthenEntrypoint implements AuthenticationEntryPoint {
         // tham khảo
         // https://stackoverflow.com/questions/78361586/how-to-customise-error-handling-in-jwt-authentication-with-spring-security-6
         ApiErrorResponse error = new ApiErrorResponse();// Custom model class for you exception
-        error.setCode(HttpStatus.FORBIDDEN.value());
+        error.setCode(HttpStatus.UNAUTHORIZED.value());
         error.setMessage("Không có quyền truy cập !");
 
-        response.setStatus(HttpStatus.FORBIDDEN.value());
+        response.setStatus(HttpStatus.UNAUTHORIZED.value());
         ServletOutputStream out = response.getOutputStream();
         new ObjectMapper().writeValue(out, error);
         out.flush();

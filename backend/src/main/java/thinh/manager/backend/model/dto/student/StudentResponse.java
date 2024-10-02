@@ -1,9 +1,6 @@
 package thinh.manager.backend.model.dto.student;
 
-import thinh.manager.backend.entity.Classes;
-import thinh.manager.backend.entity.Student;
 import thinh.manager.backend.model.dto.classes.ClassesDto;
-import thinh.manager.backend.model.dto.classes.ClassesResponse;
 import lombok.Builder;
 import lombok.Data;
 
@@ -20,4 +17,8 @@ public class StudentResponse {
     private String email;
     private String phone;
     private List<ClassesDto> classesResponses;
+    private String image;
+    private String address;
+    private String active;
+    private String level;
 }

@@ -1,9 +1,11 @@
 package thinh.manager.backend.controller;
 
+import thinh.manager.backend.model.dto.student.CreateStudentRequest;
 import thinh.manager.backend.model.dto.student.StudentDto;
 import thinh.manager.backend.model.dto.student.StudentResponse;
-import thinh.manager.backend.model.dto.student.UpdateStudentDto;
+import thinh.manager.backend.model.dto.student.UpdateStudentRequest;
 import thinh.manager.backend.service.EnrollmentService;
+import thinh.manager.backend.service.MailService;
 import thinh.manager.backend.service.StudentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,14 +25,17 @@ import java.util.List;
 public class StudentController {
     private final StudentService service;
     private final EnrollmentService enrollmentService;
+    private MailService mailService;
 
     @Autowired
     public StudentController(
             StudentService service,
-            EnrollmentService enrollmentService
+            EnrollmentService enrollmentService,
+            MailService mailService
     ) {
         this.service = service;
         this.enrollmentService = enrollmentService;
+        this.mailService = mailService;
     }
 
     @Operation(description = "Trả ra danh sách học viên !", summary = "Lấy danh sách tất cả học viên ")
@@ -41,7 +46,7 @@ public class StudentController {
 
     @Operation(summary = "Tạo mới học viên", description = "Trả ra học viên vừa mới thêm !")
     @PostMapping
-    public ResponseEntity<?> store(@RequestBody @Valid StudentDto request) {
+    public ResponseEntity<?> store(@RequestBody @Valid CreateStudentRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.storeStudent(request));
     }
 
@@ -60,7 +65,7 @@ public class StudentController {
 
     @Operation(summary = "Cập nhật thông tin học viên", description = "Cập nhật thông tin chi tiết 1 học viên")
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable String id, @RequestBody UpdateStudentDto request) throws BadRequestException {
+    public ResponseEntity<?> update(@PathVariable String id, @RequestBody UpdateStudentRequest request) throws BadRequestException {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.updateStudent(id, request));
     }
 
@@ -76,4 +81,9 @@ public class StudentController {
     ) {
         return ResponseEntity.ok(service.searchStudent(name, startDate, endDate ,gender,classId,courseId));
     }
+
+//    @GetMapping("/test-sendmail")
+//    public void testSendMail(){
+//        mailService.sendEmailVerifyEmailRegister();
+//    }
 }

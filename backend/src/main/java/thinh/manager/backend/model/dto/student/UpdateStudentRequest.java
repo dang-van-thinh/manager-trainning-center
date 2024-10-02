@@ -6,7 +6,7 @@ import lombok.Data;
 import java.time.LocalDate;
 
 @Data
-public class UpdateStudentDto {
+public class UpdateStudentRequest {
     @NotEmpty(message = "Không được để trống trường này !")
     private String fullName;
     @NotEmpty(message = "Không được để trống trường này !")
@@ -19,4 +19,8 @@ public class UpdateStudentDto {
     private String phone;
     @NotEmpty(message = "Không được để trống trường này !")
     private String level;
+    @NotEmpty(message = "Không được để trống trường này !")
+    private String image;
+    @NotEmpty(message = "Không được để trống trường này !")
+    private String address;
 }

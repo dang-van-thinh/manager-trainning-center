@@ -20,4 +20,6 @@ public abstract class Person {
     private String phone;
     @Enumerated(EnumType.STRING)
     private ERole role;
+    private String address;
+    private String image;
 }
