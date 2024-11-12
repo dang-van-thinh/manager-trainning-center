@@ -32,22 +32,23 @@ public class SecurityConfig {
     @Autowired
     @Lazy
     private JwtAuthFilter authFilter;
-
     @Autowired
     private CustomJwtAuthenEntrypoint customJwtAuthenEntrypoint;
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity.cors(Customizer.withDefaults())
-                .authorizeHttpRequests(auth -> auth
-                                .requestMatchers(
-                                        "api/auth/login",
-                                        "/v3/api-docs/**",
-                                        "/swagger-ui/**",
-                                        "/swagger-ui.html",
-                                        "/verify-email/**"
-                                ).permitAll()
-                        .anyRequest().authenticated()
-                )
+//                .authorizeHttpRequests(auth -> auth
+//                                .requestMatchers(
+//                                        "api/auth/login",
+//                                        "/v3/api-docs/**",
+//                                        "/swagger-ui/**",
+//                                        "/swagger-ui.html",
+//                                        "/verify-email/**"
+//                                ).permitAll()
+////                        .requestMatchers("/api/users").hasRole("ADMIN")
+//                        .anyRequest().permitAll()
+//                )
+                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
                 .exceptionHandling(handling -> handling.authenticationEntryPoint(customJwtAuthenEntrypoint)) // cau hinh tra ra loi khi thuc hien xac thuc
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

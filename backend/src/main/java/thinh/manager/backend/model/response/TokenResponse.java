@@ -4,10 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Date;
+
 @Getter
 @Setter
 @AllArgsConstructor
 public class TokenResponse {
-    private Integer code;
-    private String message;
+    private String token;
+    private Date time;
 }

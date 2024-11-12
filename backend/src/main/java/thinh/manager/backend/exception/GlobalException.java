@@ -50,7 +50,7 @@ public class GlobalException {
 
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<?> authenticationException(AuthenticationException exception){
-        return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                .body(new ApiErrorResponse(HttpStatus.FORBIDDEN.value(), exception.getMessage()));
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(new ApiErrorResponse(HttpStatus.UNAUTHORIZED.value(), exception.getMessage()));
     }
 }

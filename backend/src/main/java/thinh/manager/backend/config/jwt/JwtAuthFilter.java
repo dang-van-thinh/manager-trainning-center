@@ -40,15 +40,13 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             // kiem tra token bat dau bang "Bearer "
             if (authHeader != null && authHeader.startsWith("Bearer ")) {
                 token = authHeader.substring(7);
-                username = service.extractUsername(token);
+                username = service.extractEmail(token);
             }
 
-            // If the token is valid and no authentication is set in the context
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 log.info("doFilter Internal is run !2");
                 UserDetails userDetails = userDetailService.loadUserByUsername(username);
 
-                // Validate token and set authentication
                 log.info("Boolean validate token " + service.validateToken(token, userDetails));
                 if (service.validateToken(token, userDetails)) {
                     log.info("doFilter Internal is run !3");

@@ -19,17 +19,14 @@ import thinh.manager.backend.service.AuthService;
 @Tag(name = "Auth",description = "Quản lý phần xác thực ")
 @RequestMapping("api/auth")
 public class AuthController {
-    private AuthService authService;
     private JwtProvider jwtProvider;
     private AuthenticationManager authenticationManager;
 
     @Autowired
     public AuthController(
-            AuthService authService,
             JwtProvider jwtProvider,
             AuthenticationManager authenticationManager
     ) {
-        this.authService = authService;
         this.jwtProvider = jwtProvider;
         this.authenticationManager = authenticationManager;
     }
@@ -39,7 +36,8 @@ public class AuthController {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(),request.getPassword()));
         if (authentication.isAuthenticated()){
-            return ResponseEntity.ok(new TokenResponse(HttpStatus.OK.value(), jwtProvider.generateToken(request.getEmail())));
+            String token = jwtProvider.generateAccessToken(request.getEmail());
+            return ResponseEntity.ok(new TokenResponse(token,jwtProvider.extractExpiration(token) ));
         }else {
             throw new UsernameNotFoundException("Request không hợp lệ !");
         }

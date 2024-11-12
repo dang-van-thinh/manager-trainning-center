@@ -16,18 +16,33 @@ import java.util.function.Function;
 public class JwtProvider {
     @Value("${jwt.serect-key}")
     private String SecretKey;
+    private final long ACCESS_EXPIRATION = 600000L; // access token - 10 phut
+    private final long REFRESH_EXPIRATION = 600000000L; // refresh token
 
-    public String generateToken(String email) {
+    public String generateAccessToken(String email) {
         log.info("Chạy vào generateToken ");
+        Date expired = new Date(new Date().getTime() + ACCESS_EXPIRATION);
         return Jwts.builder()
                 .setSubject(email)
-                .claim("role","ADMIN") // thu voi nhung thong tin khac
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 10)) // set time 10phut
+//                .claim("role","ADMIN") // thu voi nhung thong tin khac
+                .setIssuedAt(new Date())
+                .setExpiration(expired) // set time 10phut
                 .signWith(SignatureAlgorithm.HS256,SecretKey)
                 .compact();
     }
 
-    public Claims decodeToken(String token) {
+    public String generateRefreshToken(String email){
+        Date expired = new Date(new Date().getTime() + REFRESH_EXPIRATION);
+        return Jwts.builder()
+                .setSubject(email)
+                .setIssuedAt(new Date())
+//                .claim("role","ADMIN") // thu voi nhung thong tin khac
+                .setExpiration(expired) // set time 10phut
+                .signWith(SignatureAlgorithm.HS256,SecretKey)
+                .compact();
+    }
+
+    public Claims extractAllToken(String token) {
         log.info("Đang chạy vào decode");
         log.info(token);
         try {
@@ -41,13 +56,13 @@ public class JwtProvider {
         }
     }
 
-    public String extractUsername(String token){
-        log.info("Email set : "+ decodeToken(token).getSubject() );
-        return decodeToken(token).getSubject();
+    public String extractEmail(String token){
+        log.info("Email set : "+ extractAllToken(token).getSubject() );
+        return extractAllToken(token).getSubject();
     }
 
     public Boolean validateToken(String token, UserDetails userDetails) {
-        final String username = extractUsername(token);
+        final String username = extractEmail(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
@@ -63,7 +78,7 @@ public class JwtProvider {
     }
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = decodeToken(token);
+        final Claims claims = extractAllToken(token);
         return claimsResolver.apply(claims);
     }
 }

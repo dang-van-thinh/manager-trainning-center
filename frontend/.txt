@@ -1,5 +1,5 @@
 design : ant design 
-toast : react-hot-toast
+toast : ant design
 react-router 
 tailwind css
 axios
